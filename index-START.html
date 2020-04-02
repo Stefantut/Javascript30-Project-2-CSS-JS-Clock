@@ -62,17 +62,59 @@
         transition: all 0.05s;
         transition-timing-function: cubic-bezier(0.01, 1.87, 0.58, 1);
       }
+      .second-hand {
+        background-color: yellowgreen;
+      }
+      .min-hand {
+        background-color: rebeccapurple;
+      }
+      .no-transition {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -o-transition: none !important;
+        transition: none !important;
+      }
     </style>
 
     <script>
       const secondHand = document.querySelector(".second-hand");
+      const minsHand = document.querySelector(".min-hand");
+      const hourHand = document.querySelector(".hour-hand");
 
       function setDate() {
         const now = new Date();
         const seconds = now.getSeconds();
-        const secondDegrees = (seconds / 60) * 360;
-        secondHand.style.transform = `rotate(${secondDegrees}deg)`;
-        console.log("seconds = " + seconds);
+        const secondDegrees = (seconds / 60) * 360 + 90;
+
+        // Removes transition for 2 seconds
+        if (seconds === 59 || seconds === 0) {
+          secondHand.classList.add("no-transition");
+          secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        } else {
+          secondHand.classList.remove("no-transition");
+          secondHand.style.transform = `rotate(${secondDegrees}deg)`;
+        }
+
+        const mins = now.getMinutes();
+        const minsDegrees = (mins / 60) * 360 + 90;
+        // Removes transition for 2 seconds
+        if (mins === 59 || mins === 0) {
+          minsHand.classList.add("no-transition");
+          minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+        } else {
+          minsHand.classList.remove("no-transition");
+          minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+        }
+
+        const hours = now.getHours();
+        const hoursDegrees = (hours / 60) * 360 + 90;
+        if (hours === 59 || hours === 0) {
+          hourHand.classList.add("no-transition");
+          hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+        } else {
+          hourHand.classList.remove("no-transition");
+          hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+        }
       }
       setInterval(setDate, 1000);
     </script>
